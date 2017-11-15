@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="375px" height="667px" viewBox="0 0 375 667" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>bg/landing</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="52.6299596%" cy="18.6674241%" fx="52.6299596%" fy="18.6674241%" r="40.8703851%" gradientTransform="translate(0.526300,0.186674),scale(1.000000,0.628186),rotate(-90.000000),translate(-0.526300,-0.186674)" id="radialGradient-1">
+            <stop stop-color="#004596" offset="0%"></stop>
+            <stop stop-color="#00326C" offset="100%"></stop>
+        </radialGradient>
+        <path d="M97.125,680.816406 C84.8085938,544.773438 108.640625,467.492187 141.230469,415.136719 C173.820312,362.78125 191.875435,366.467419 209.67525,317.752253 C227.475065,269.037087 203.410631,229.70548 227.832031,205.15625 C252.253432,180.60702 354.660156,154.746094 342.976562,92.8984375 C335.1875,51.6666667 352.674479,9.24739583 395.4375,-34.359375 L362.765625,-47.9726562 L362.765625,-16.1210938 C336.432292,12.5846354 322.044271,35.2617188 319.601562,51.9101562 C315.9375,76.8828125 329.203125,115.296875 272.777344,141.402344 C216.351563,167.507813 207.074219,172.371094 193.296875,195.125 C179.519531,217.878906 193.054337,296.322565 151.859034,317.752253 C110.66373,339.18194 92.8476562,351.6875 54.1640625,415.136719 C28.375,457.436198 -5.61197917,518.88151 -47.796875,599.472656 L-39.5195312,710.230469 C59.7877604,781.316406 105.335938,771.511719 97.125,680.816406 Z" id="path-2"></path>
+        <filter x="-11.7%" y="-6.2%" width="123.5%" height="112.9%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="17" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Assets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="bg/landing">
+            <rect id="Rectangle" fill="url(#radialGradient-1)" x="-22" y="0" width="419" height="667"></rect>
+            <g id="Path-2" opacity="0.559046649">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>
