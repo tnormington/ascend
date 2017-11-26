@@ -1,38 +1,66 @@
+import './ReactotronConfig'
 import React from 'react';
+
+import { Image, AsyncStorage } from 'react-native';
 
 import {
   // StackNavigator,
   DrawerNavigator
 } from 'react-navigation';
 
-import { ApolloProvider, createNetworkInterface, ApolloClient } from 'react-apollo';
+import { 
+  ApolloProvider,
+  createNetworkInterface,
+  ApolloClient
+} from 'react-apollo';
 
+import { ApolloLink } from 'apollo-client-preset'
+import { HttpLink } from 'apollo-link-http'
 
+import { GC_USER_ID, GC_AUTH_TOKEN } from './constants'
 
-import HomePage from './pages/HomePage.js';
-import MountainList from './pages/MountainList.js';
-import Login from './pages/Login.js';
-import SignUp from './pages/SignUp.js';
-// import SideMenu from './components/SideMenu.js';
+import HomePage from './pages/HomePage';
+import MountainList from './pages/MountainList';
+import CustomDrawer from './components/CustomDrawer';
+
+import style from './styles/style.js';
 
 const networkInterface = createNetworkInterface({
-  uri: 'https://api.graph.cool/simple/v1/cj7i2bgpy01e60199okkfokmy'
+  // uri: 'https://api.graph.cool/simple/v1/cj7i2bgpy01e60199okkfokmy' // Ascend
+  uri: 'https://api.graph.cool/simple/v1/cja5zta5a0zzz0128w3t9mekp' // Server
 })
 
+const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cja5zta5a0zzz0128w3t9mekp' })
+
+const middlewareAuthLink = new ApolloLink((operation, forward) => {
+  const token = AsyncStorage.getItem(GC_AUTH_TOKEN)
+  const authorizationHeader = token ? `Bearer ${token}` : null
+  operation.setContext({
+    headers: {
+      authorization: authorizationHeader
+    }
+  })
+  return forward(operation)
+})
+
+const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink)
+
 const client = new ApolloClient({
-  networkInterface
+  networkInterface,
+  link: httpLinkWithAuthToken
 })
 
 const Drawer = DrawerNavigator({
   Home: { screen: HomePage },
   Mountains: { screen: MountainList },
-  Login: { screen: Login },
-  SignUp: { screen: SignUp },
 });
+
+
 
 const App = () => (
   <ApolloProvider client={client}>
-    <Drawer />
+      <Drawer
+        contentComponent={CustomDrawer} />
   </ApolloProvider>
 );
 

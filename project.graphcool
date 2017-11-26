@@ -1,7 +1,7 @@
 # project: cj7i2bgpy01e60199okkfokmy
-# version: 13
+# version: 60
 
-type File implements Node {
+type File @model {
   contentType: String!
   createdAt: DateTime!
   id: ID! @isUnique
@@ -12,47 +12,54 @@ type File implements Node {
   url: String! @isUnique
 }
 
-type Link implements Node {
-  createdAt: DateTime!
-  id: ID! @isUnique
-  updatedAt: DateTime!
-  description: String!
-  url: String!
-  postedBy: User @relation(name: "UsersLinks")
-  votes: [Vote!]! @relation(name: "VotesOnLink")
-}
-
-type Post implements Node {
-  createdAt: DateTime!
-  description: String!
-  id: ID! @isUnique
-  imageUrl: String!
-  updatedAt: DateTime!
-}
-
-type User implements Node {
+type User @model {
   createdAt: DateTime!
   id: ID! @isUnique
   updatedAt: DateTime!
   email: String @isUnique
   password: String
   name: String
-  links: [Link!]! @relation(name: "UsersLinks")
-  votes: [Vote!]! @relation(name: "UsersVotes")
+  mountainRecords: [MountainRecord!]! @relation(name: "MountainsClimbed")
+  profilePicture: String
+  title: String
+  totalElevation: Int
+  trophyRecords: [TrophyRecord!]! @relation(name: "Trophies")
 }
 
-type Vote implements Node {
-  user: User! @relation(name: "UsersVotes")
-  link: Link! @relation(name: "VotesOnLink")
-  createdAt: DateTime!
-  id: ID! @isUnique
-  updatedAt: DateTime!
-}
-
-type Mountain implements Node {
+type Mountain @model {
   id: ID! @isUnique
   name: String!
   range: String!
   createdAt: DateTime!
+  elevation: Json!
+  rank: Int!
   updatedAt: DateTime!
+}
+
+type MountainRecord @model {
+  altitudeGained: Int!
+  dateClimbed: DateTime!
+  distance: Float!
+  id: ID! @isUnique
+  mountainID: Int!
+  progress: Int!
+  totalAscent: Float!
+  totalDescent: Float!
+  user: User @relation(name: "MountainsClimbed")
+}
+
+type Trophy @model {
+  description: String!
+  id: ID! @isUnique
+  image: String!
+  name: String!
+}
+
+type TrophyRecord @model {
+  dateEarned: DateTime!
+  id: ID! @isUnique
+  progress: Float!
+  status: String!
+  trophyID: Int!
+  user: User @relation(name: "Trophies")
 }

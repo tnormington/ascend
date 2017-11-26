@@ -1,0 +1,75 @@
+# The following types define the data model of the example service
+# based on which the GraphQL API is generated
+
+# type User @model {
+#   id: ID! @isUnique
+#   name: String
+#   dateOfBirth: DateTime
+
+#   # Uncomment below - you can declare relations between models like this
+
+#   # posts: [Post!]! @relation(name: "UserPosts")
+# }
+
+
+# Uncomment the model below as well
+
+# type Post @model {
+#   id: ID! @isUnique
+#   title: String!
+#
+#   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
+#   author: User! @relation(name: "UserPosts")
+# }
+
+# added by email-password template: (please uncomment)
+# type User @model {
+#   # Required system field:
+#   id: ID! @isUnique # read-only (managed by Graphcool)
+
+#   # Optional system fields (remove if not needed):
+#   createdAt: DateTime! # read-only (managed by Graphcool)
+#   updatedAt: DateTime! # read-only (managed by Graphcool)
+
+#   email: String! @isUnique
+#   password: String!
+
+#   mountainsClimbed: [MountainRecord!]! @relation(name: "MountainsClimbed")
+# }
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  email: String @isUnique
+  password: String
+  username: String
+  mountainRecords: [MountainRecord!]! @relation(name: "MountainsClimbed")
+  profilePicture: String
+  title: String
+  totalElevation: Int
+  # trophyRecords: [TrophyRecord!]! @relation(name: "Trophies")
+}
+
+type Mountain @model {
+  id: ID! @isUnique
+  name: String!
+  range: String!
+  createdAt: DateTime!
+  elevation: Json!
+  rank: Int!
+  updatedAt: DateTime!
+}
+
+type MountainRecord @model {
+  altitudeGained: Int!
+  dateClimbed: DateTime!
+  distance: Float!
+  id: ID! @isUnique
+  mountainID: Int!
+  progress: Int!
+  totalAscent: Float!
+  totalDescent: Float!
+  user: User @relation(name: "MountainsClimbed")
+}
+

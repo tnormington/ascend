@@ -7,7 +7,7 @@ export default class ButtonSmall extends React.Component {
     render() {
         return (
             <TouchableOpacity
-                onPress={this._onPressButton}
+                onPress={this.props.onPress}
                 style={ style.ctaSmall }
                 >
                 <Text style={{
