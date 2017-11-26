@@ -79,7 +79,7 @@ class App extends Component {
         </div>
         <div className="footer-bar-wrapper">
           <footer className="footer">
-            &copy; Ascend 2017  || brought to you by <a href="http://tjn.io" target="_blank">tjn.io</a>
+            &copy; Ascend 2017  || brought to you by <a href="http://tjn.io" target="_blank" rel="noopener noreferrer">tjn.io</a>
           </footer>
         </div>
       </div>
