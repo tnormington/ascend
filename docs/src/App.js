@@ -61,16 +61,20 @@ class App extends Component {
         <div className="slider-wrapper">
           <Slider {...settings}>
             <div className="slide">
-              <div className="slide-image-wrapper">
-                <img src={slide1} alt="Slide 1" />
+              <div className="slide-inner">
+                <div className="slide-image-wrapper">
+                  <img src={slide1} alt="Slide 1" />
+                </div>
+                <h2>Earn experience points and trophies to level up your profile and unlock aesthetic features.</h2>
               </div>
-              <h2>Earn experience points and trophies to level up your profile and unlock aesthetic features.</h2>
             </div>
             <div className="slide">
-              <div className="slide-image-wrapper">
-                <img src={slide2} alt="Slide 1" />
+              <div className="slide-inner">
+                <div className="slide-image-wrapper">
+                  <img src={slide2} alt="Slide 1" />
+                </div>
+                <h2>Track your progress as you get closer to clearing all of the 14ers.</h2>
               </div>
-              <h2>Track your progress as you get closer to clearing all of the 14ers.</h2>
             </div>
           </Slider>
         </div>
