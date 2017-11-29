@@ -1,16 +1,21 @@
 {
-  "main.css": "static/css/main.b16e930d.css",
-  "main.css.map": "static/css/main.b16e930d.css.map",
-  "main.js": "static/js/main.ef2cfa14.js",
-  "main.js.map": "static/js/main.ef2cfa14.js.map",
+  "main.css": "static/css/main.3706a4e6.css",
+  "main.css.map": "static/css/main.3706a4e6.css.map",
+  "main.js": "static/js/main.68e5086f.js",
+  "main.js.map": "static/js/main.68e5086f.js.map",
   "static/media/arrow_left.svg": "static/media/arrow_left.6201ce41.svg",
   "static/media/arrow_right.svg": "static/media/arrow_right.1bcd9808.svg",
-  "static/media/ascend_logo.svg": "static/media/ascend_logo.f4b8fcc4.svg",
+  "static/media/ascend_logo.svg": "static/media/ascend_logo.a35f57b4.svg",
   "static/media/dashboard.png": "static/media/dashboard.73d4e38c.png",
+  "static/media/github.svg": "static/media/github.d225a93b.svg",
+  "static/media/hero_bg.jpg": "static/media/hero_bg.ff8c8752.jpg",
+  "static/media/instagram.svg": "static/media/instagram.f22e8919.svg",
   "static/media/leaderboards.png": "static/media/leaderboards.1d024916.png",
+  "static/media/logo_letter.svg": "static/media/logo_letter.1902f20d.svg",
   "static/media/progress.png": "static/media/progress.1fae17b2.png",
   "static/media/slick.eot": "static/media/slick.ced611da.eot",
   "static/media/slick.svg": "static/media/slick.f97e3bbf.svg",
   "static/media/slick.ttf": "static/media/slick.d41f55a7.ttf",
-  "static/media/slick.woff": "static/media/slick.b7c9e1e4.woff"
+  "static/media/slick.woff": "static/media/slick.b7c9e1e4.woff",
+  "static/media/twitter.svg": "static/media/twitter.e5ffe5fa.svg"
 }
