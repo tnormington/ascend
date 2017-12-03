@@ -7,6 +7,10 @@ import github from '../static/images/social/github.svg';
 class SocialLinks extends Component {
     render() {
 
+        // const instagramLink = `https://urlgeni.us/instagram/ascend`;
+        const iosIGLink = `instagram://user?username=ascend_app_`;
+        const igLink = `https://www.instagram.com/ascend_app_/`;
+
         return (
             <div className="social-links">
                 <a
@@ -17,7 +21,7 @@ class SocialLinks extends Component {
                     <img src={twitter} alt="Twitter logo" />
                 </a>
                 <a
-                href="https://www.instagram.com/ascend_app_/"
+                href={igLink}
                 target="_blank" 
                 title="Ascend Instagram"
                 rel="noopener noreferrer">

@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 
 
-import { graphql, gql, compose } from 'react-apollo';
+// import { graphql, gql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import BaseContainer from '../components/BaseContainer'
 import TopBar from '../components/TopBar'
@@ -56,10 +58,11 @@ class Profile extends React.Component {
         this.handleTitleChange = this._handleTitleChange.bind(this)
         this.handleNameChange = this._handleNameChange.bind(this)
         this.handleProfileSave = this._handleProfileSave.bind(this)
+        this.getProfileData = this._getProfileData.bind(this)
 
         this.state = {
-            username: 'Tim Normington',
-            title: 'Sight Seeker',
+            username: null,
+            title: null,
             edit: false,
             measurement: 'ft',
             level: 13
@@ -67,6 +70,7 @@ class Profile extends React.Component {
     }
 
     componentWillMount() {
+        this.getProfileData();
         // AsyncStorage.getItem(GC_USER_ID)
         //     .then((id) => {
         //         console.log(id);
@@ -87,24 +91,42 @@ class Profile extends React.Component {
     }
 
     _handleNameChange(value) {
+        console.log(`changing name in profile state: ${value}`);
         this.setState({username: value})
     }
 
     _handleProfileSave = async () => {
         const { username, title } = this.state
-        const id = await AsyncStorage.getItem(GC_USER_ID)
-
+        // const id = await AsyncStorage.getItem(GC_USER_ID)
+        // console.log(this.props.updateUserMutation);
         const result = await this.props.updateUserMutation({
             variables: {
-                id,
+                id: this.props.id,
                 username,
                 title
             }
         })
+
+        console.log(result);
+
+
+    }
+
+    _getProfileData = async () => {
+        const result = await this.props.userQuery;
     }
 
     render() {
-        
+        if(this.props.userQuery.loading) {
+            return (
+                <Text>Loading...</Text>
+            )
+        }
+
+
+        const user = this.props.userQuery.User;
+
+        // console.log(user);
 
         return (
             <View style={{ flex: 1, width: '100%' }}>
@@ -117,6 +139,7 @@ class Profile extends React.Component {
                         edit={this.state.edit}
                         onPress={() => {
                             if(this.state.edit) {
+                                console.log(`profile saving`);
                                 this.handleProfileSave();   
                             }
                             this.setState({
@@ -125,11 +148,12 @@ class Profile extends React.Component {
                         }} />
                     <NamePlate
                         edit={this.state.edit}
-                        title={this.state.title}
+                        title={this.state.title != null ? this.state.title : user.title}
                         handleNameChange={this.handleNameChange}
                         handleTitleChange={this.handleTitleChange}
                         measurement={this.state.measurement}
-                        username={this.state.username}
+                        username={this.state.username != null ? this.state.username : user.username}
+                        user={user}
                         level={this.state.level} />
                     <LatestClimbs
                         climbs={climbs}
@@ -144,8 +168,8 @@ class Profile extends React.Component {
 const UPDATE_USER_MUTATION = gql`
 mutation updateUserMutation(
     $id: ID!,
-    $username: String!,
-    $title: String!
+    $username: String,
+    $title: String
 ) {
   updateUser(
     id: $id,

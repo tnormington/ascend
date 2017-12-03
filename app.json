@@ -1,5 +1,11 @@
 {
   "expo": {
-    "sdkVersion": "20.0.0"
+    "sdkVersion": "20.0.0",
+    "ios": {
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Enabling Image Picker IOS",
+        "NSCameraUsageDescription": "Enabling Camera Usage IOS"
+      }
+    }
   }
 }

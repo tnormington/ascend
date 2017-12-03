@@ -12,7 +12,7 @@ class MoreInfo extends Component {
             <div className="page-wrapper">
                 <header className="header-short">
                     <div className="container">
-                        <Link to="/" className="header-short__logo" title="Home">
+                        <Link to="/ascend" className="header-short__logo" title="Home">
                             <img src={logo} alt="Ascend letter logo" />
                         </Link>
                     </div>

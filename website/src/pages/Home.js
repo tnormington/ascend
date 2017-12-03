@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 
 // Components
 import Slider from 'react-slick';
-import NewsletterSignup from '../components/NewsletterSignup';
+// import NewsletterSignup from '../components/NewsletterSignup';
 import Slide from '../components/Slide';
-import SocialLinks from '../components/SocialLinks';
+// import SocialLinks from '../components/SocialLinks';
 import Footer from '../components/Footer';
 
 // Assets
@@ -43,6 +43,32 @@ const PrevArrow = (props) => {
 }
 
 class Home extends Component {
+    constructor(props) {
+        super(props)
+
+        this.handleLoad = this.handleLoad.bind(this);
+
+        this.state = {
+            loading: true,
+        }
+    }
+
+    handleLoad() {
+        this.setState({
+            loading: false
+        });
+    }
+
+    componentDidMount() {
+        window.addEventListener('load', this.handleLoad);
+
+        if(document.readyState === 'complete') this.handleLoad();
+    }
+    
+    // componentWillUpdate() {
+        // if(this.state.loading) this.setState({loading: false});
+    // }
+
     render() {
         const settings = {
             dots: true,
@@ -57,38 +83,45 @@ class Home extends Component {
 
         return (
             <div>
-                <header className="header">
-                    <Link to="/more-info" className="header__link">More Information</Link>
-                    <div className="header__image">
-                        <img src={logo} className="logo" alt="Ascend Logo" />
+                { this.state.loading &&
+                    <div className="loading-spinner"></div>
+                }
+                { !this.state.loading &&
+                    <div>
+                        <header className="header">
+                            <Link to="/ascend/more-info" className="header__link">More Information</Link>
+                            <div className="header__image">
+                                <img src={logo} className="logo" alt="Ascend Logo" />
+                            </div>
+                        </header>
+                        <div className="slider-wrapper">
+                            <Slider {...settings}>
+                                <div>
+                                    <Slide
+                                    body="Earn experience points and trophies to level up your profile and unlock aesthetic features."
+                                    image={slide1}
+                                    imageAlt="Screenshot of the dashboard" />
+                                </div>
+                                <div>
+                                    <Slide
+                                    body="Track your progress as you get closer to clearing all of the 14ers."
+                                    image={slide2}
+                                    imageAlt="Screenshot of a mountain record" />
+                                </div>
+                                <div>
+                                    <Slide
+                                    body="Compete against everyone for first place on the leaderboards."
+                                    image={slide3}
+                                    imageAlt="Screenshot of a leaderboards" />
+                                </div>
+                            </Slider>
+                            <div className="center">
+                                <Link className="cta cta-yellow more-info-cta" to="/ascend/more-info">MORE INFORMATION</Link>
+                            </div>
+                        </div>
+                        <Footer />
                     </div>
-                </header>
-                <div className="slider-wrapper">
-                    <Slider {...settings}>
-                        <div>
-                            <Slide
-                            body="Earn experience points and trophies to level up your profile and unlock aesthetic features."
-                            image={slide1}
-                            imageAlt="Screenshot of the dashboard" />
-                        </div>
-                        <div>
-                            <Slide
-                            body="Track your progress as you get closer to clearing all of the 14ers."
-                            image={slide2}
-                            imageAlt="Screenshot of a mountain record" />
-                        </div>
-                        <div>
-                            <Slide
-                            body="Compete against everyone for first place on the leaderboards."
-                            image={slide3}
-                            imageAlt="Screenshot of a leaderboards" />
-                        </div>
-                    </Slider>
-                    <div className="center">
-                        <Link className="cta cta-yellow more-info-cta" to="/more-info">MORE INFORMATION</Link>
-                    </div>
-                </div>
-                <Footer />
+                }
             </div>
         )
     }

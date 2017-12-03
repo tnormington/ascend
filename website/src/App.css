@@ -100,6 +100,18 @@ a:hover {
   /* margin: 0 auto; */
 }
 
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./static/images/spinner.gif');
+  background-position: center center;
+  background-size: 75px auto;
+  background-repeat: no-repeat;
+}
+
 .header-short {
   background-color: #004596;
   background-image: url('./static/images/hero_bg.jpg');

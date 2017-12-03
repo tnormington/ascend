@@ -34,7 +34,8 @@ const style = StyleSheet.create({
         paddingBottom: 16,
         backgroundColor: '#FFEA51',
         borderRadius: 4,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     ctaYellow: {
         backgroundColor: '#FFEA51',

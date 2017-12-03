@@ -21,6 +21,7 @@ import { GC_USER_ID, GC_AUTH_TOKEN } from './constants'
 
 import HomePage from './pages/HomePage';
 import MountainList from './pages/MountainList';
+import RecordHike from './pages/RecordHike';
 import CustomDrawer from './components/CustomDrawer';
 
 import style from './styles/style.js';
@@ -53,6 +54,7 @@ const client = new ApolloClient({
 const Drawer = DrawerNavigator({
   Home: { screen: HomePage },
   Mountains: { screen: MountainList },
+  RecordHike: { screen: RecordHike },
 });
 
 

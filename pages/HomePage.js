@@ -23,11 +23,12 @@ import { GC_USER_ID, GC_AUTH_TOKEN } from '../constants'
 import style from '../styles/style.js';
 
 class HomePage extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.signUserOut = this._signUserOut.bind(this)
         this.confirm = this._confirm.bind(this)
+        this.checkUserId = this._checkUserId.bind(this)
 
 
         this.state = {
@@ -36,7 +37,8 @@ class HomePage extends React.Component {
             password: '',
             password2: '',
             loading: true,
-            // userId: AsyncStorage.getItem(GC_USER_ID)
+            userID: null,
+            loginBtnLoading: false
         };
 
         
@@ -44,16 +46,22 @@ class HomePage extends React.Component {
 
 
     componentWillMount() {
+        this.checkUserId();
+    }
+
+
+    _checkUserId = async () => {
+        console.log(`checking user ID`);
         try {
-            AsyncStorage.getItem(GC_USER_ID).then((userId) => {
-                this.setState({ userId })
+            const id = await AsyncStorage.getItem(GC_USER_ID);
+            console.log(`user ID: ${id}`);
+            this.setState({
+                userId: id
             })
         } catch(error) {
-            throw error
+            // catch error
         } finally {
-            this.setState({
-                loading: false,
-            })
+            this.setState({loading: false});
         }
     }
 
@@ -62,6 +70,7 @@ class HomePage extends React.Component {
     }
 
     _saveUserData = async (id, token) => {
+        console.log(`saving user data`);
         try {
             await AsyncStorage.setItem(GC_USER_ID, id)
             await AsyncStorage.setItem(GC_AUTH_TOKEN, token)
@@ -70,7 +79,8 @@ class HomePage extends React.Component {
             })
         } catch (error) {
             // Error saving data
-            throw error
+            // throw error
+            console.log(error);
         }
     }
 
@@ -87,7 +97,9 @@ class HomePage extends React.Component {
     }
 
     _confirm = async () => {
+        this.setState({loginBtnLoading: true});
         const { email, password } = this.state
+        if(!email || !password) this.setState({ loginBtnLoading: false });
         if (this.state.login) {
           const result = await this.props.authenticateUserMutation({
             variables: {
@@ -109,6 +121,7 @@ class HomePage extends React.Component {
         }
         // navigate('Profile');
         // this.props.history.push(`/`)
+        this.setState({ loginBtnLoading: false });
     }
 
 
@@ -116,7 +129,7 @@ class HomePage extends React.Component {
         const { navigate } = this.props.navigation;
         const logoFull = require('../assets/logo/full.png');
         // const userId = AsyncStorage.getItem(GC_USER_ID)
-
+        // console.log(`User ID in render: ${this.state.userId}`);
         
 
         return (
@@ -126,6 +139,7 @@ class HomePage extends React.Component {
                 }
                 { this.state.userId &&
                     <Profile
+                        id={this.state.userId}
                         navigate={navigate}
                         signOut={this.signUserOut} />
                 }
@@ -174,6 +188,7 @@ class HomePage extends React.Component {
                             onPress={this.confirm}
                             title={ this.state.login ? `Login` : `Sign Up`}
                             color='#FFEA51'
+                            loading={this.state.loginBtnLoading}
                             />
                         <Text style={{
                             marginTop: 30,
@@ -215,6 +230,8 @@ mutation AuthenticateUserMutation($email: String!, $password: String!) {
   }
 }
 `
+
+
 
 export default compose(
 graphql(SIGNUP_USER_MUTATION, { name: 'signupUserMutation' }),

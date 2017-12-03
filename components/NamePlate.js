@@ -5,10 +5,12 @@ import {
   View,
   Image,
   TextInput,
-  Picker
+  Picker,
+//   ImagePickerIOS
 } from 'react-native';
 
 import ModalDropdown from 'react-native-modal-dropdown';
+import ImagePicker from 'react-native-image-picker';
 
 import TotalElevation from './TotalElevation'
 
@@ -26,9 +28,54 @@ const options = [
     'Rambler'
 ]
 
+
+
 class NamePlate extends React.Component {
     constructor(props) {
         super(props)
+
+        this.handleImageUpload = this._handleImageUpload.bind(this);
+        this.state = {
+            // username: this.props.username,
+            // title: this.props.title
+        }
+    }
+
+    _handleImageUpload = () => {
+        const imagePickerOptions = {
+            title: 'Select Avatar',
+            customButtons: [
+                {name: 'fb', title: 'Choose Photo from Facebook'},
+            ],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        
+        ImagePicker.showImagePicker(imagePickerOptions, (response) => {
+            console.log('Response = ', response);
+          
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+              let source = { uri: response.uri };
+          
+              // You can also display the image using data:
+              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+          
+              this.setState({
+                avatarSource: source
+              });
+            }
+        });
     }
 
 
@@ -42,15 +89,22 @@ class NamePlate extends React.Component {
                 marginBottom: 8
             }}>
                 <View style={{ marginRight: 8 }}>
-                    <Image source={portrait} />
-                    <Text style={style.level}>{this.props.level}</Text>
+                { this.props.edit &&
+                    <Text onPress={this.handleImageUpload}>Upload</Text>
+                }
+                { !this.props.edit && this.state.avatarSource &&
+                    <Image source={this.state.avatarSource} />
+                }
+                <Text style={style.level}>{this.props.level}</Text>
                 </View>
                 <View>
                     <TextInput
                         editable={this.props.edit}
                         value={this.props.username}
                         placeholder="Username"
-                        onChangeText={this.props.handleNameChange}
+                        onChangeText={(value) => {
+                            this.props.handleNameChange(value)
+                        }}
                         style={{ 
                             marginBottom: 4,
                             // flex: 1
