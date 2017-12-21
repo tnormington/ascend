@@ -6,16 +6,36 @@ import style from '../styles/style.js';
 const loader = require('../assets/loader/mountain_bounce.gif');
 
 export default class Button extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
                 style={ style.cta }
                 >
-                <Text style={{
-                    textAlign: 'center',
-                    flex: 0,
-                }}>{ this.props.title.toUpperCase() }</Text>
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center'
+                }}>
+                    <Text style={{
+                        // textAlign: 'center',
+                        flex: 0,
+                        // flexDirection: 'column',
+                    }}>{ this.props.title.toUpperCase() }
+                    </Text>
+                    { this.props.subTitle &&
+                        <Text
+                            style={{
+                                flex: 0,
+                                fontSize: 10
+                            }}>
+                        {this.props.subTitle}
+                        </Text>
+                    }
+                </View>
                 { this.props.loading && 
                     <Image 
                         style={{

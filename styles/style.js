@@ -4,16 +4,18 @@ const style = StyleSheet.create({
     bg: {
         flex: 1,
         resizeMode: 'cover',
-        padding: 17,
         width: '100%',
-        alignItems: 'center'
+        alignItems: 'stretch'
     },
     content: {
         flex: 1,
         backgroundColor: '#fff',
         borderRadius: 4,
         padding: 8,
-        width: '100%'
+        marginTop: 70,
+        marginRight: 10,
+        marginLeft: 10,
+        marginBottom: 10,
     },
     input: {
         backgroundColor: '#fff',
@@ -47,7 +49,9 @@ const style = StyleSheet.create({
         borderRadius: 4,
         padding: 8,
         borderWidth: 1,
-        borderColor: '#92DFFF'
+        borderColor: '#92DFFF',
+        alignSelf: 'center'
+        // flex: 0,
     },
     topBar: {
         marginTop: 10,
@@ -55,7 +59,12 @@ const style = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         padding: 10,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        zIndex: 20,
+        position: 'absolute',
+        top: 10,
+        left: 0,
+        right: 0,
     },
     totalElevation: {
         flex: 1,

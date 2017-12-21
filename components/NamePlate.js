@@ -120,7 +120,7 @@ class NamePlate extends React.Component {
                             <Text style={{ marginBottom: 6 }}>{this.props.title}</Text>
                             <TotalElevation
                                 measurement={this.props.measurement}
-                                totalElevation='12450' />
+                                totalElevation={this.props.totalElevation} />
                         </View>
                     }
                 </View>

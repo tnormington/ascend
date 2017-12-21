@@ -6,17 +6,20 @@ import {
     // Button,
     TextInput,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    // DeviceEventEmitter
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import { connect } from 'react-redux';
+
 import BaseContainer from '../components/BaseContainer'
-import TopBar from '../components/TopBar.js';
 import Button from '../components/Button.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import Profile from '../components/Profile.js';
+import Login from '../components/Login.js';
 
 import { GC_USER_ID, GC_AUTH_TOKEN } from '../constants'
 
@@ -29,7 +32,13 @@ class HomePage extends React.Component {
         this.signUserOut = this._signUserOut.bind(this)
         this.confirm = this._confirm.bind(this)
         this.checkUserId = this._checkUserId.bind(this)
+        this.handleEmail = this._handleInput.bind(this, 'email')
+        this.handlePassword = this._handleInput.bind(this, 'password')
+        this.handlePassword2 = this._handleInput.bind(this, 'password2')
 
+        
+        // store.subscribe(this.render());
+        
 
         this.state = {
             login: true,
@@ -37,7 +46,7 @@ class HomePage extends React.Component {
             password: '',
             password2: '',
             loading: true,
-            userID: null,
+            // userID: store.getState().userId,
             loginBtnLoading: false
         };
 
@@ -55,9 +64,11 @@ class HomePage extends React.Component {
         try {
             const id = await AsyncStorage.getItem(GC_USER_ID);
             console.log(`user ID: ${id}`);
-            this.setState({
-                userId: id
-            })
+            this.props.signUserIn(id);
+            // store.dispatch({
+            //     type: 'SIGN_IN',
+            //     userId: id
+            // });
         } catch(error) {
             // catch error
         } finally {
@@ -74,9 +85,10 @@ class HomePage extends React.Component {
         try {
             await AsyncStorage.setItem(GC_USER_ID, id)
             await AsyncStorage.setItem(GC_AUTH_TOKEN, token)
-            this.setState({
-                userId: id
-            })
+            // this.setState({
+            //     userId: id
+            // })
+            this.props.signUserIn(id);
         } catch (error) {
             // Error saving data
             // throw error
@@ -88,9 +100,10 @@ class HomePage extends React.Component {
         try {
             await AsyncStorage.setItem(GC_USER_ID, '')
             await AsyncStorage.setItem(GC_AUTH_TOKEN, '')
-            this.setState({
-                userId: null
-            })
+            // this.setState({
+            //     userId: null
+            // })
+            this.props.signUserOut();
         } catch(error) {
             // catch error
         }
@@ -124,83 +137,54 @@ class HomePage extends React.Component {
         this.setState({ loginBtnLoading: false });
     }
 
+    // _signOut = async () => {
+    //     try {
+    //         await AsyncStorage.removeItem(GC_USER_ID)
+    //         await AsyncStorage.removeItem(GC_AUTH_TOKEN)
+    //         this.setState({
+    //             userID: null,
+    //         })
+    //     } catch (error) {
+    //         // Error saving data
+    //     } finally {
+    //         this.props.navigation.navigate('HomePage');
+    //     }
+    // }
+
+    _handleInput(key, val) {
+        this.setState({
+            [key]: val
+        });
+    }
+
 
     render() {
-        const { navigate } = this.props.navigation;
-        const logoFull = require('../assets/logo/full.png');
+        const navigation = this.props.navigation;
+        // const logoFull = require('../assets/logo/full.png');
         // const userId = AsyncStorage.getItem(GC_USER_ID)
         // console.log(`User ID in render: ${this.state.userId}`);
-        
+        // console.log(`store.getState().userId in homepage: ${store.getState().userId}`);
+
+        console.log(this.props);
 
         return (
             <BaseContainer>
                 { this.state.loading && 
                     <Text>Loading..</Text>
                 }
-                { this.state.userId &&
+                { this.props.userId && !this.state.loading &&
                     <Profile
-                        id={this.state.userId}
-                        navigate={navigate}
+                        id={this.props.userId}
+                        navigation={navigation}
                         signOut={this.signUserOut} />
                 }
-                { !this.state.userId && !this.state.loading &&
-                    <View style={{ 
-                        flex: 1,
-                        width: '100%',
-                        alignItems: 'center'
-                     }}>
-                        <Image
-                            source={ logoFull }
-                            style={{
-                                // flex: 1,
-                                resizeMode: 'center',
-                                width: '70%',
-                                marginBottom: 20,
-                                marginTop: 20
-                            }}/>
-                        <TextInput
-                            style={style.input}
-                            placeholder={ this.state.login ? `Enter an Email Address` : `Enter an Email Address` }
-                            onChangeText={(text) => this.setState({ email: text })}
-                            underlineColorAndroid='rgba(0,0,0,0)'
-                            autoCapitalize='none'
-                            />
-                        <TextInput
-                            style={style.input}
-                            placeholder="Password"
-                            onChangeText={(text) => this.setState({ password: text })}
-                            underlineColorAndroid='rgba(0,0,0,0)'
-                            autoCapitalize='none'
-                            secureTextEntry={true}
-                            />
-                        { !this.state.login &&
-                            <TextInput
-                                style={style.input}
-                                placeholder="Confirm Password"
-                                onChangeText={(text) => this.setState({ password2: text })}
-                                underlineColorAndroid='rgba(0,0,0,0)'
-                                autoCapitalize='none'
-                                secureTextEntry={true}
-                                />
-                        }
-                        <Button
-                            style={ style.cta, style.ctaYellow }
-                            onPress={this.confirm}
-                            title={ this.state.login ? `Login` : `Sign Up`}
-                            color='#FFEA51'
-                            loading={this.state.loginBtnLoading}
-                            />
-                        <Text style={{
-                            marginTop: 30,
-                            marginBottom: 10,
-                            color: '#92DFFF'
-                        }}>
-                            { this.state.login ? `Don't have an account?` : `Already have an account?` }
-                        </Text>
-                        <ButtonSmall
-                            title={ this.state.login ? `Create One` : `Log In` }
-                            onPress={() => this.setState({ login: !this.state.login })}/>
-                    </View>
+                { !this.props.userId && !this.state.loading &&
+                    <Login
+                        // dispatch={this.props.dispatch}
+                        handleEmail={this.handleEmail}
+                        handlePassword={this.handlePassword}
+                        handlePassword2={this.handlePassword2}
+                        confirm={this.confirm} />
                 }
             </BaseContainer>
         )
@@ -231,9 +215,36 @@ mutation AuthenticateUserMutation($email: String!, $password: String!) {
 }
 `
 
+const mapStateToProps = (state) => {
+    return {
+      userId: state.userId,
+    };
+};
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUserIn: (userId) => {
+            dispatch({
+                type: 'SIGN_IN',
+                userId: userId
+            });
+        },
+        signUserOut: () => {
+            dispatch({
+                type: 'SIGN_OUT',
+            });
+        }
+    };
+};
+  
+const HomePageContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HomePage);
 
 
 export default compose(
 graphql(SIGNUP_USER_MUTATION, { name: 'signupUserMutation' }),
 graphql(AUTHENTICATE_USER_MUTATION, { name: 'authenticateUserMutation' })
-)(HomePage)
+)(HomePageContainer)

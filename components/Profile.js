@@ -7,6 +7,7 @@ import {
   Image,
   AsyncStorage,
   TextInput
+
 } from 'react-native';
 
 
@@ -60,7 +61,10 @@ class Profile extends React.Component {
         this.handleProfileSave = this._handleProfileSave.bind(this)
         this.getProfileData = this._getProfileData.bind(this)
 
+        this.handleEditToggle = this._handleEditToggle.bind(this);
+
         this.state = {
+            profile: this.props.profile,
             username: null,
             title: null,
             edit: false,
@@ -69,21 +73,12 @@ class Profile extends React.Component {
         }
     }
 
-    componentWillMount() {
-        this.getProfileData();
-        // AsyncStorage.getItem(GC_USER_ID)
-        //     .then((id) => {
-        //         console.log(id);
-        //         // this.props.userQuery(id)
-        //         //     .then((data) => {
-        //         //         const { id, username, title } = data.User;
-        //         //         this.setState({
-        //         //             id,
-        //         //             username,
-        //         //             title
-        //         //         })
-        //         //     })
-        //     })
+    _handleEditToggle() {
+        // if(this.state.edit)
+        // alert('toggle!');
+        this.setState({
+            edit: !this.state.edit
+        })
     }
 
     _handleTitleChange(i, value) {
@@ -113,7 +108,11 @@ class Profile extends React.Component {
     }
 
     _getProfileData = async () => {
-        const result = await this.props.userQuery;
+        // const result = await this.props.userQuery;
+        // console.log(`result.username: ${result.username}`);
+        // // this.setState({
+        // //     username: result.username
+        // // })
     }
 
     render() {
@@ -130,30 +129,20 @@ class Profile extends React.Component {
 
         return (
             <View style={{ flex: 1, width: '100%' }}>
-                <TopBar
-                    navigate={this.props.navigate}
-                    signOut={this.props.signOut}
-                    />
+                <TopBar navigation={this.props.navigation} signOut={this.props.signOut} />
                 <View style={style.content}>
                     <ButtonCog
                         edit={this.state.edit}
-                        onPress={() => {
-                            if(this.state.edit) {
-                                console.log(`profile saving`);
-                                this.handleProfileSave();   
-                            }
-                            this.setState({
-                                edit: !this.state.edit
-                            })
-                        }} />
+                        onPress={ this.handleEditToggle } />
                     <NamePlate
                         edit={this.state.edit}
                         title={this.state.title != null ? this.state.title : user.title}
                         handleNameChange={this.handleNameChange}
                         handleTitleChange={this.handleTitleChange}
                         measurement={this.state.measurement}
-                        username={this.state.username != null ? this.state.username : user.username}
+                        username={ this.state.username != null ? this.state.username : user.username }
                         user={user}
+                        totalElevation={user.totalElevation ? user.totalElevation : 0 }
                         level={this.state.level} />
                     <LatestClimbs
                         climbs={climbs}
@@ -164,26 +153,28 @@ class Profile extends React.Component {
     }
 }
 
-
-const UPDATE_USER_MUTATION = gql`
+export const UPDATE_USER_MUTATION = gql`
 mutation updateUserMutation(
     $id: ID!,
     $username: String,
-    $title: String
+    $title: String,
+    $totalElevation: Int
 ) {
   updateUser(
     id: $id,
     username: $username,
-    title: $title
+    title: $title,
+    totalElevation: $totalElevation
   ) {
     id
     username
     title
+    totalElevation
   }
 }
 `
 
-const USER_QUERY = gql`
+export const USER_QUERY = gql`
 query userQuery($id: ID!) {
   User(
     id: $id
@@ -191,9 +182,33 @@ query userQuery($id: ID!) {
     id
     username
     title
+    totalElevation
+    email
   }
 }
 `
+
+const mapStateToProps = (state) => {
+    return {
+        profile: {
+            username: state.username,
+            title: state.title,
+            totalElevation: state.totalElevation
+        }
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateProfile: (profile) => {
+            dispatch({
+                type: 'UPDATE_PROFILE',
+                profile
+            });
+        }
+    };  
+};
+
 
 // 3
 export default compose(

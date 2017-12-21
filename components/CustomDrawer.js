@@ -1,28 +1,63 @@
 import { DrawerItems, SafeAreaView } from 'react-navigation';
-import { Button } from './Button';
+import ButtonSmall from './ButtonSmall';
 import React from 'react'
-import { View, Text } from 'react-native';
+
+import { connect } from 'react-redux'
+import {
+    ScrollView
+} from 'react-native';
 
 class CustomDrawer extends React.Component {
     constructor(props) {
         super(props)
-
     }
-
-    render() {  
-        // props.items.push()
-
+    
+    render() {
         return (
             <ScrollView style={{
-            backgroundColor:"#004596"
+                backgroundColor: '#1D4A80',
+                paddingTop: 20,
             }}>
                 <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-                    <DrawerItems {...props} />
+                    <DrawerItems {...this.props} />
                 </SafeAreaView>
-                <Text>Sign Out</Text>
+                <ButtonSmall
+                    title="Sign Out"
+                    onPress={() => {
+                        this.props.navigation.navigate('DrawerClose');
+                        this.props.signUserOut()
+                    }} />
             </ScrollView>
         )
     }
 }
 
-export default CustomDrawer;
+
+const mapStateToProps = (state) => {
+    return {
+      userId: state.userId,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUserIn: (userId) => {
+            dispatch({
+                type: 'SIGN_IN',
+                userId: userId
+            });
+        },
+        signUserOut: () => {
+            dispatch({
+                type: 'SIGN_OUT',
+            });
+        }
+    };
+};
+
+const CustomDrawerContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomDrawer)
+
+export default CustomDrawerContainer;

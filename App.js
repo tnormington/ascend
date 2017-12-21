@@ -19,9 +19,15 @@ import { HttpLink } from 'apollo-link-http'
 
 import { GC_USER_ID, GC_AUTH_TOKEN } from './constants'
 
+import { Provider } from 'react-redux';
+import store from './store'
+
 import HomePage from './pages/HomePage';
 import MountainList from './pages/MountainList';
 import RecordHike from './pages/RecordHike';
+import MountainPage from './pages/MountainPage';
+
+
 import CustomDrawer from './components/CustomDrawer';
 
 import style from './styles/style.js';
@@ -51,19 +57,31 @@ const client = new ApolloClient({
   link: httpLinkWithAuthToken
 })
 
-const Drawer = DrawerNavigator({
+const Drawer = DrawerNavigator(
+{ // Routes
   Home: { screen: HomePage },
   Mountains: { screen: MountainList },
+  Mountain: { screen: MountainPage },
   RecordHike: { screen: RecordHike },
+}, { // Config
+  contentComponent: CustomDrawer,
+  contentOptions: {
+    activeBackgroundColor: '#fff',
+    activeTintColor: '#4986CE',
+    inactiveTintColor: '#fff'
+  }
 });
 
 
 
 const App = () => (
-  <ApolloProvider client={client}>
-      <Drawer
-        contentComponent={CustomDrawer} />
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+        <Drawer />
+    </ApolloProvider>
+  </Provider>
 );
+
+// store.subscribe(App);
 
 export default App;

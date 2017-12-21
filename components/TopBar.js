@@ -16,7 +16,7 @@ import style from '../styles/style.js'
 export default class TopBar extends React.Component {
     constructor(props) {
         super(props)
-        this.n = this.props.navigate;
+        this.navigate = this.props.navigation.navigate;
         this.signOut = this._signOut.bind(this)
     }
 // 
@@ -37,26 +37,14 @@ export default class TopBar extends React.Component {
 
         return (
             <View style={style.topBar}>
-                <TouchableOpacity
-                    onPress={() => this.n('DrawerOpen')}
-                    // style={ style.cta }
-                    >
+                <TouchableOpacity onPress={() => this.navigate('DrawerOpen')}>
                     <Image
-                        source={menu}
-                        style={{
-                        // ImageAlign: 'center',
-                        // flex: 1,
-                    }} />
+                        source={menu} />
                 </TouchableOpacity>
-                <Button
-                    title="Sign Out"
-                    onPress={() => {
-                        // alert('sign out')
-                        // this.props.signOut()
-                        this.signOut();
-                        // n('HomePage')
-                    }}
-                    />
+                <Button 
+                    title="Back"
+                    color="#fff"
+                    onPress={ () => this.props.navigation.goBack() } />
             </View>
         )
     }

@@ -39,14 +39,18 @@ class MountainList extends React.Component {
   }
   
   render() {
-    const { navigate } = this.props.navigation;
+    const navigation = this.props.navigation;
 
     return (
         <BaseContainer>
-          <TopBar navigate={navigate}></TopBar>
+          <TopBar navigation={navigation}></TopBar>
           <Text>All Mountains</Text>
           <View style={style.content}>
             <FlatList
+              style={{
+                width: '100%',
+                flex: 1
+              }}
               data={this.state.mountains}
               renderItem={({item}) => {
                 // console.log(item.name)
